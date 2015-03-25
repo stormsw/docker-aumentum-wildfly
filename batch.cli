@@ -1,11 +1,16 @@
 batch
-/core-service=management/access=authorization:write-attribute(name=provider,value=simple)
+# rbac or simple: currently we need only developers settings and simple is OK
+#/core-service=management/access=authorization:write-attribute(name=provider,value=simple)
+# PostgreSQL 9.3 JDBC4
 module add --name=org.postgresql --resources=/tmp/psql-jdbc.jar --dependencies=javax.api,javax.transaction.api
 /subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+# Microsoft SQL Server and Sybase
 module add --name=net.sourceforge.jtds --resources=/tmp/jtds-1.3.1.jar --dependencies=javax.api,javax.transaction.api
 /subsystem=datasources/jdbc-driver=jtds:add(driver-name=jtds,driver-module-name=net.sourceforge.jtds,driver-class-name=net.sourceforge.jtds.jdbc.Driver,driver-xa-datasource-class-name=net.sourceforge.jtds.jdbcx.JtdsDataSource)
+# Oracle MySQL 5.1 Connector
 module add --name=com.mysql.jdbc --resources=/tmp/mysql-connector-java-5.1.35-bin.jar --dependencies=javax.api,javax.transaction.api
 /subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql,driver-module-name=com.mysql.jdbc,driver-xa-datasource-class-name=com.mysql.jdbc.jdbc2.optional.MysqlXADataSource,driver-class-name=com.mysql.jdbc.Driver)
+# Oracle 12.1 driver
 module add --name=com.oracle.jdbc --resources=/tmp/ojdbc7.jar --dependencies=javax.api,javax.transaction.api
 /subsystem=datasources/jdbc-driver=oracle:add(driver-name=oracle,driver-module-name=com.oracle.jdbc,driver-class-name=oracle.jdbc.OracleDriver,driver-xa-datasource-class-name=oracle.jdbc.xa.client.OracleXADataSource)
 run-batch
