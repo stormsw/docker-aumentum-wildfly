@@ -12,5 +12,6 @@ module add --name=com.mysql.jdbc --resources=/tmp/mysql-connector-java-5.1.35-bi
 /subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql,driver-module-name=com.mysql.jdbc,driver-xa-datasource-class-name=com.mysql.jdbc.jdbc2.optional.MysqlXADataSource,driver-class-name=com.mysql.jdbc.Driver)
 # Oracle 12.1 driver
 module add --name=com.oracle.jdbc --resources=/tmp/ojdbc7.jar --dependencies=javax.api,javax.transaction.api
-/subsystem=datasources/jdbc-driver=oracle:add(driver-name=oracle,driver-module-name=com.oracle.jdbc,driver-class-name=oracle.jdbc.OracleDriver,driver-xa-datasource-class-name=oracle.jdbc.xa.client.OracleXADataSource)
+/subsystem=datasources/jdbc-driver=oracle:add(driver-name=oracle,driver-module-name=com.oracle.jdbc,driver-xa-datasource-class-name=oracle.jdbc.xa.client.OracleXADataSource)
+/subsystem=datasources/jdbc-driver=oradb:add(driver-name=oradb,driver-module-name=com.oracle.jdbc,driver-xa-datasource-class-name=oracle.jdbc.OracleDriver)
 run-batch
