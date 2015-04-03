@@ -55,7 +55,7 @@ RUN curl -L -o /tmp/psql-jdbc.jar http://jdbc.postgresql.org/download/postgresql
 RUN curl -L -o /tmp/jdts-1.3.1-dist.zip http://sourceforge.net/projects/jtds/files/jtds/1.3.1/jtds-1.3.1-dist.zip/download && \
 unzip -p /tmp/jdts-1.3.1-dist.zip jtds-1.3.1.jar>/tmp/jtds-1.3.1.jar
 #integrate Oracle driver
-ADD jdbc/oracle/ojdbc7.jar /tmp/
+COPY jdbc/oracle/ /tmp/
 #integrate MySQL driver
 ADD jdbc/mysql/mysql-connector-java-5.1.35-bin.jar /tmp/
 #register modules and datasources
