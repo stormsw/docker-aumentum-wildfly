@@ -2,9 +2,9 @@
 This image is based on latest Ubuntu image.
 It automatically installs oracle java 8 package and downloads Wildfly 8.2.
 There is integrated jdbc drivers for
-* PostgreSQL
-* MySQL
-* MS SQL Server/Sybase from jtds
+* PostgreSQL (postgresql-9.3-1102.jdbc41.jar)
+* MySQL (mysql-connector-java-5.1.35-bin.jar)
+* MS SQL Server/Sybase from jtds (jtds-1.3.1.jar)
 * Oracle 12.0.1.0 drivers
 
 Here is a note for Oracle drivers:
