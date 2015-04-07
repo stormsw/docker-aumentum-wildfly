@@ -2,13 +2,16 @@
 # based on Ubuntu
 FROM ubuntu
 MAINTAINER Alexander Varchenko <alexander.varchenko@gmail.com>
-# Part1: Aumentum-Base:OracleJava8
+#this helps with java timezone issues
+RUN echo Europe/Kiev > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
+ENV DEBIAN_FRONTEND noninteractive
+# Part1: Oracle:Java8
 # install software-properties-common (ubuntu >= 12.10)
 # to be able to use add-apt-repository
 RUN apt-get update && apt-get install -y --no-install-recommends software-properties-common
 # add repository for web-update
 RUN add-apt-repository ppa:webupd8team/java
-#Oracle jdk8 (possible to use 6,7,8)
+# Oracle jdk8 (possible to use 6,7,8)
 # accept Oracle license
 RUN echo /usr/bin/debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
 RUN echo /usr/bin/debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
@@ -18,10 +21,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libsaxon-java \
   augeas-tools \
   curl \
-  unzip
-#slim down image size
-RUN apt-get clean
-RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  unzip && \
+rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Part2: Aumentum-WildFly:8.2
 # Create a user and group used to launch processes
 # The user ID 1000 is the default for the first user on Debian/Ubuntu,
@@ -34,9 +35,8 @@ WORKDIR /opt/jboss
 USER jboss
 #export Java home
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
-
+#=======================================
 # Wildfly part
-
 # Set the WILDFLY_VERSION env variable
 ENV WILDFLY_VERSION 8.2.0.Final
 # Add the WildFly distribution to /opt, and make wildfly the owner of the extracted tar content
@@ -49,6 +49,9 @@ mv $HOME/wildfly-$WILDFLY_VERSION $HOME/wildfly
 ENV JBOSS_HOME /opt/jboss/wildfly
 # add default admin:admin user (We are set SIMPLE not RBAC mode in the batch.cli)
 RUN /opt/jboss/wildfly/bin/add-user.sh admin admin --silent
+
+#JDBC integration part
+
 #Integrate POSTGRESQL jdbc driver
 RUN curl -L -o /tmp/psql-jdbc.jar http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar
 #Integrate SQL Server/Sybase driver
@@ -68,12 +71,12 @@ USER root
 # Fix for Error: Could not rename /opt/jboss/wildfly/standalone/configuration/standalone_xml_history/current
 RUN rm -rf /opt/jboss/wildfly/standalone/configuration/standalone_xml_history &&\
 rm /tmp/*.jar &&\
-rm /tmp/*.zip &&\
-rm /tmp/config.sh &&\
-rm /tmp/batch.cli
-
+rm /tmp/*.zip
+# this is commented cause wildfly-debug package may reuse this
+#rm /tmp/config.sh &&\
+#rm /tmp/batch.cli
+ENV DEBIAN_FRONTEND newt
 USER jboss
-
 # Expose the ports we're interested in
 EXPOSE 8080 9990
 # Set the default command to run on boot
