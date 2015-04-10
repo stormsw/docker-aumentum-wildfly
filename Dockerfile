@@ -1,29 +1,8 @@
 #!/usr/bin/docker
 # based on Ubuntu
-FROM ubuntu
+FROM stromsw/ubuntu-oracle-java
 MAINTAINER Alexander Varchenko <alexander.varchenko@gmail.com>
-#this helps with java timezone issues
-RUN echo Europe/Kiev > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
-ENV DEBIAN_FRONTEND noninteractive
-# Part1: Oracle:Java8
-# install software-properties-common (ubuntu >= 12.10)
-# to be able to use add-apt-repository
-RUN apt-get update && apt-get install -y --no-install-recommends software-properties-common
-# add repository for web-update
-RUN add-apt-repository ppa:webupd8team/java
-# Oracle jdk8 (possible to use 6,7,8)
-# accept Oracle license
-RUN echo /usr/bin/debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-RUN echo /usr/bin/debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
-RUN apt-get update && apt-get install -y --no-install-recommends \
-  oracle-java8-installer \
-  xmlstarlet \
-  libsaxon-java \
-  augeas-tools \
-  curl \
-  unzip && \
-rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-# Part2: Aumentum-WildFly:8.2
+# Aumentum-WildFly:8.2
 # Create a user and group used to launch processes
 # The user ID 1000 is the default for the first user on Debian/Ubuntu,
 # so there is a high chance that this ID will be equal to the current user
@@ -33,7 +12,7 @@ RUN groupadd -r jboss -g 1000 && useradd -u 1000 -r -g jboss -m -d /opt/jboss -s
 WORKDIR /opt/jboss
 # Specify the user which should be used to execute all commands below
 USER jboss
-#export Java home
+#export Java home for JBoss user
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 #=======================================
 # Wildfly part
