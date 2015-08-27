@@ -40,6 +40,7 @@ unzip -p /tmp/jdts-1.3.1-dist.zip jtds-1.3.1.jar>/tmp/jtds-1.3.1.jar
 COPY jdbc/oracle/ /tmp/
 #integrate MySQL driver
 ADD jdbc/mysql/mysql-connector-java-5.1.35-bin.jar /tmp/
+ADD jdbc/mssql/sqljdbc_4.0/enu/sqljdbc4.jar /tmp/
 #register modules and datasources
 # please chek alternatives on https://goldmann.pl/blog/2014/07/23/customizing-the-configuration-of-the-wildfly-docker-image/
 # the tools described are included in this image
