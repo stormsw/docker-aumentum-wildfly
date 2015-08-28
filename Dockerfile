@@ -1,6 +1,6 @@
 #!/usr/bin/docker
 # based on Ubuntu
-FROM stromsw/ubuntu-java:oracle-java8
+FROM stormsw/ubuntu-java:Oracle-Java8
 MAINTAINER Alexander Varchenko <alexander.varchenko@gmail.com>
 # Aumentum-WildFly:8.2
 # Create a user and group used to launch processes
